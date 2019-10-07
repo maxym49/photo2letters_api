@@ -2,30 +2,36 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import indexRouter from './routes/index';
+import { connect } from './config/database/db';
+import registerRouter from './resources/register/register.route';
+import loginRouter from './resources/login/login.route';
+import logoutRouter from './resources/logout/logout.route';
+import photoFilesRouter from './resources/photoFile/file.route';
+import { useAllStrategies } from './config/authentication/passportStrategies';
+import { errorHandler } from './middlewares/errorHandler';
 
 dotenv.config();
 const app = express();
 
+// App middlewares
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 
-mongoose
-  .connect(`${process.env.DEV_DATABASE_URL}`, { useUnifiedTopology: true })
-  .then(() => {
-    console.info(`The database is running on ${process.env.DEV_DATABASE_URL}`);
-  })
-  .catch(error => console.error(error));
+// Passport middlewares
+useAllStrategies();
 
-mongoose.connection.on('error', err => {
-  console.error(err);
-});
+// Database connection
+connect();
 
-app.use('/', indexRouter);
+// App routes
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
+app.use('/photoFiles', photoFilesRouter);
+app.use(errorHandler);
 
 module.exports = app;

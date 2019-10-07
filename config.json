@@ -1,0 +1,25 @@
+{
+  "development": {
+    "config_id": "development",
+    "app_name": "photo2letters api",
+    "app_desc": "The API for photo2letters mobile app",
+    "node_port": 4040,
+    "json_indentation": 4,
+    "database": "mongodb://localhost:27017/photo2letters_database",
+    "secret": "zdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4cThIIoDvwdueQB468K5xDc5633seEFoqwxjF_xSJyQQeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+  },
+  "testing": {
+    "config_id": "testing",
+    "database": "my-app-db-test"
+  },
+  "staging": {
+    "config_id": "staging",
+    "node_port": 8080,
+    "database": "my-app-db-stag"
+  },
+  "production": {
+    "config_id": "production",
+    "node_port": 8080,
+    "database": "my-app-db-prod"
+  }
+}

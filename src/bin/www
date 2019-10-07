@@ -4,15 +4,17 @@
  * Module dependencies.
  */
 
+const config = require('../../config.js');
 const app = require('../app');
 const debug = require('debug')('photo2letters-api:server');
 const http = require('http');
+const readline = require('readline');
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = global.gConfig.node_port;
 app.set('port', port);
 
 /**
@@ -58,9 +60,7 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -70,7 +70,14 @@ function onError(error) {
       break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
-      process.exit(1);
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+      rl.question('Please specify the port to use:\n', answer => {
+        server.listen(answer);
+        rl.close();
+      });
       break;
     default:
       throw error;
@@ -83,8 +90,7 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.info('\x1b[32m%s\x1b[0m', `App is running on port:${addr.port}`);
 }
