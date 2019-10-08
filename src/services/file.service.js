@@ -1,3 +1,4 @@
+import fs from 'fs';
 import File from '../common-models/file';
 import log from '../tools/console/logger';
 import PdfMaker from '../tools/pdf-maker/pdf';
@@ -5,10 +6,10 @@ import PdfMaker from '../tools/pdf-maker/pdf';
 const getByUserID = async user_id => await File.find({ user_id });
 
 const getById = async id => {
-  return await File.findById(id).select('-hash');
+  return await File.findById(id);
 };
 
-const create = async ({ _id, email }, { name, fileType, text }) => {
+const canCreate = async ({ _id, email }, { name, fileType }) => {
   const userFiles = await getByUserID(_id);
   const nameExists = userFiles.find(
     file =>
@@ -21,8 +22,11 @@ const create = async ({ _id, email }, { name, fileType, text }) => {
     );
     return false;
   }
+  return true;
+};
 
-  const maker = new PdfMaker(name);
+const create = async ({ _id }, { name, fileType }, text) => {
+  const maker = new PdfMaker(name, _id);
   maker.writeLine(text);
   await maker.save();
 
@@ -30,15 +34,22 @@ const create = async ({ _id, email }, { name, fileType, text }) => {
     user_id: _id,
     name,
     fileType,
-    fileBuffer: maker.bufferString
+    fileBuffer: maker.pdfBuffer
   });
 
   await newFile.save().catch(error => console.error(error));
-  return true;
 };
 
 const remove = async id => {
   await File.findByIdAndRemove(id);
 };
 
-export { getByUserID, getById, create, remove };
+const openFile = async ({ _id }) => {
+  const files = await getByUserID(_id);
+  files.forEach(file => {
+    fs.writeFileSync(`${__dirname}/${file.name}.pdf`, file.fileBuffer);
+    log.info(`File [${file.name}] has been saved as pdf`);
+  });
+};
+
+export { getByUserID, getById, canCreate, create, remove, openFile };

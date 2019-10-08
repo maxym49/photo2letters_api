@@ -8,6 +8,7 @@ import registerRouter from './resources/register/register.route';
 import loginRouter from './resources/login/login.route';
 import logoutRouter from './resources/logout/logout.route';
 import photoFilesRouter from './resources/photoFile/file.route';
+import emailRouter from './resources/email/email.route';
 import { useAllStrategies } from './config/authentication/passportStrategies';
 import { errorHandler } from './middlewares/errorHandler';
 
@@ -32,6 +33,7 @@ app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/photoFiles', photoFilesRouter);
+app.use('/email', emailRouter);
 app.use(errorHandler);
 
 module.exports = app;
