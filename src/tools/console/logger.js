@@ -13,11 +13,8 @@ export default class Logger {
 
   static error(error) {
     const { stack, message } = error;
-    console.error(
-      red,
-      `[error] \nStack:\n${stack}\nMessage:
-        ${message}`
-    );
+    if (!message) console.error(error);
+    else console.error(red, `[error] \nStack:\n${stack}\nMessage:${message}`);
   }
 
   static warn(message) {

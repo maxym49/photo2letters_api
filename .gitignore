@@ -1,8 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-#production directory
-/dist
-
 # compiled output
 /dist
 /tmp
@@ -48,6 +45,10 @@ errors.log
 
 #database scripts
 /mongo-scripts
+
+#security-config
+/security
+security
 
 #env
 /.env

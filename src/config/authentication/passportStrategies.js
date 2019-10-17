@@ -1,14 +1,15 @@
 import passport from 'passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import User from '../../common-models/user';
+import { decryptSecret } from '../../../security/tokens/secret';
 
 const config = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: global.gConfig.secret
+  secretOrKey: decryptSecret()
 };
 
 const validate = (payload, done) => {
-  User.findOne({ id: payload.sub }, (err, user) => {
+  User.findById(payload._id.toString(), (err, user) => {
     if (err) {
       return done(err, false);
     }

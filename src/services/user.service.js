@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../common-models/user';
 import log from '../tools/console/logger';
+import { decryptSecret } from '../../security/tokens/secret';
 
 const getAll = async () => {
   return await User.find({}).select('-hash');
@@ -39,12 +40,30 @@ const update = async user => {
   await currentUser.save();
 };
 
+const updatePassword = async (password, _id) => {
+  const currentUser = await User.findById(_id);
+  if (currentUser)
+    currentUser.setPassword(password, async error => {
+      if (error) log.error(error);
+      else await currentUser.save();
+    });
+};
+
 const remove = async id => {
   await User.findByIdAndRemove(id);
 };
 
 const authenticate = async ({ _id }) => {
-  return jwt.sign({ _id: _id }, global.gConfig.secret);
+  return jwt.sign({ _id: _id }, decryptSecret());
 };
 
-export { getAll, getById, getByEmail, create, update, remove, authenticate };
+export {
+  getAll,
+  getById,
+  getByEmail,
+  create,
+  update,
+  updatePassword,
+  remove,
+  authenticate
+};

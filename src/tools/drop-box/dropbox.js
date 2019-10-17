@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import log from '../console/logger';
 import { getRemoteFileName } from '../spliter/spliter';
+import { decryptToken } from '../../../security/dropbox/dropbox.security';
 
 export default class Dropbox {
   constructor() {
@@ -25,20 +26,27 @@ export default class Dropbox {
     );
   }
 
-  async download(rFileName) {
-    await this._store(
-      {
-        resource: 'files/download',
-        parameters: {
-          path: `/pdf/${rFileName}`
+  download(rFileName) {
+    return new Promise((resolve, reject) => {
+      this._store(
+        {
+          resource: 'files/download',
+          parameters: {
+            path: `/pdf/${rFileName}`
+          }
+        },
+        error => {
+          if (error) {
+            console.error(error);
+            reject(error);
+          } else resolve();
         }
-      },
-      error => {
-        if (error) console.error(error);
-      }
-    ).pipe(
-      fs.createWriteStream(path.join(__dirname, '/temporary-files', rFileName))
-    );
+      ).pipe(
+        fs.createWriteStream(
+          path.join(__dirname, '/temporary-files', rFileName)
+        )
+      );
+    });
   }
 
   async removeFile(userID, fileName) {
@@ -57,8 +65,7 @@ export default class Dropbox {
   }
 
   initToken() {
-    this.token =
-      'K9nGXJZPrVAAAAAAAAAAUBOup-uUCYM4YeAavVHzM-LF_-J7tGeXantdTuJUFk9K';
+    this.token = decryptToken();
   }
 
   initStore() {

@@ -1,29 +1,117 @@
 import fs from 'fs';
 import path from 'path';
 import { getByUserID } from '../../services/file.service';
+import { canCreate, create, update } from '../../services/email.service';
 import Dropbox from '../../tools/drop-box/dropbox';
 import { getRemoteFileName } from '../../tools/spliter/spliter';
+import Sender from '../../tools/email-sender/sender';
+import { SUBJECT_TEXT } from '../../tools/constatns/email';
+import log from '../../tools/console/logger';
 
 const send = async (req, res, next) => {
-  const files = await getByUserID(req.user._id);
-  // const files = req.body.files;
-  const dropbox = new Dropbox();
-  files.forEach(async file => {
-    const rFileName = getRemoteFileName(req.user._id, file.name);
-    await dropbox.download(rFileName);
+  try {
+    const cc = await canCreate(req.user._id);
+    const _id = req.user._id;
+    if (cc) await create(req.user, req.body.emailObj);
+    else await update(req.user, req.body.emailObj);
+
+    const files = await getByUserID(_id);
+    const { selectedFiles } = req.body.emailObj;
+    const sFiles = [];
+    files.forEach(file => {
+      selectedFiles.forEach(sFile => {
+        if (sFile._id === file._id.toString()) {
+          sFiles.push(file);
+        }
+      });
+    });
+
+    connectDropbox(sFiles, _id).then(async () => {
+      const attachments = fillAttachments(sFiles, _id);
+      await setAndSend(req.body.emailObj, attachments, sFiles, _id);
+    });
+
+    res.status(201).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeFiles = async (files, _id) => {
+  await files.forEach(async file => {
+    const rFileName = getRemoteFileName(_id, file.name);
     fs.unlink(
       path
         .join(__dirname, '../../tools/drop-box/temporary-files', rFileName)
         .toString(),
       error => {
         if (error) {
-          next(error);
+          log.error(error);
         }
       }
     );
   });
-  // send email, delete files
-  res.status(200).end();
+};
+
+const connectDropbox = async (files, _id) => {
+  return new Promise(resolve => {
+    const dropbox = new Dropbox();
+    downloadFiles(files, _id, dropbox)
+      .then(df => {
+        df.forEach((file, index) => {
+          if (index === df.length - 1) {
+            file.then(() => resolve());
+          }
+        });
+      })
+      .catch(error => {
+        log.error(error);
+      });
+  });
+};
+
+const downloadFiles = async (files, _id, dropbox) => {
+  return await files.map(async (file, index) => {
+    const rFileName = getRemoteFileName(_id, file.name);
+    await dropbox.download(rFileName);
+    return index;
+  });
+};
+
+const fillAttachments = (files, _id) => {
+  const attachments = [];
+  files.forEach(file => {
+    const rFileName = getRemoteFileName(_id, file.name);
+    const filePath = path.join(
+      __dirname,
+      '../../tools/drop-box/temporary-files',
+      rFileName
+    );
+    const fileToAdd = {
+      filename: `${file.name}.pdf`,
+      path: filePath
+    };
+    attachments.push(fileToAdd);
+  });
+  return attachments;
+};
+
+const setAndSend = async ({ value }, attachments, files, _id) => {
+  return new Promise(resolve => {
+    const sender = new Sender();
+    sender.subject = SUBJECT_TEXT;
+    sender.userEmail = value;
+    sender.attachments = attachments;
+    sender
+      .init()
+      .then(() => {
+        sender.sendMail().then(async () => {
+          await removeFiles(files, _id);
+        });
+      })
+      .catch(error => log.error(error));
+    resolve();
+  });
 };
 
 export { send };

@@ -9,6 +9,6 @@ router
   .post(jwtAuth, saveFile)
   .delete(jwtAuth, removeAllFiles);
 
-router.route('/:_id').delete(jwtAuth, removeSpecificFile);
+router.route('/specific').delete(jwtAuth, removeSpecificFile);
 
 export default router;

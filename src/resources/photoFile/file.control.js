@@ -2,23 +2,25 @@ import {
   create,
   canCreate,
   remove,
-  getByUserID,
-  getById
+  getByUserID
 } from '../../services/file.service';
 import OCR from '../../tools/ocr/ocr';
 import Dropbox from '../../tools/drop-box/dropbox';
 
 const saveFile = async (req, res, next) => {
   try {
-    const cc = await canCreate(req.user, req.body.file);
+    const { fileName } = req.body;
+    const cc = await canCreate(req.user, fileName);
     if (!cc) res.status(409).end();
     else {
       res.status(201).end();
       const ocr = new OCR();
-      ocr.fileName = req.body.file.name;
+      ocr.fileName = fileName;
       ocr.userName = req.user.email;
+      ocr.image = req.body.image.base64;
+      console.info(req.body.image.base64);
       await ocr.startRecognize();
-      await create(req.user, req.body.file, ocr.text);
+      await create(req.user, fileName, ocr.text);
     }
   } catch (error) {
     next(error);
@@ -42,14 +44,15 @@ const removeAllFiles = async (req, res, next) => {
 
 const removeSpecificFile = async (req, res, next) => {
   try {
-    const { _id } = req.params;
-    const dropbox = new Dropbox();
-    const file = await getById(_id);
-    if (!file) {
+    const { filesToRemove } = req.body;
+    if (!filesToRemove.length) {
       res.status(404).end();
     } else {
-      await dropbox.removeFile(req.user._id, file.name);
-      await remove(_id);
+      filesToRemove.forEach(async file => {
+        const dropbox = new Dropbox();
+        await dropbox.removeFile(req.user._id, file.title);
+        await remove(file.value);
+      });
       res.status(201).end();
     }
   } catch (error) {

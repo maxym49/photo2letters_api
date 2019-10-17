@@ -9,12 +9,9 @@ const getById = async id => {
   return await File.findById(id);
 };
 
-const canCreate = async ({ _id, email }, { name, fileType }) => {
+const canCreate = async ({ _id, email }, name) => {
   const userFiles = await getByUserID(_id);
-  const nameExists = userFiles.find(
-    file =>
-      file.name === name && file.fileType.toString() === fileType.toString()
-  );
+  const nameExists = userFiles.find(file => file.name === name);
 
   if (nameExists) {
     log.warn(
@@ -25,7 +22,7 @@ const canCreate = async ({ _id, email }, { name, fileType }) => {
   return true;
 };
 
-const create = async ({ _id }, { name, fileType }, text) => {
+const create = async ({ _id }, name, text, fileType = 1) => {
   const maker = new PdfMaker(name, _id);
   maker.writeLine(text);
   await maker.save();
@@ -33,11 +30,11 @@ const create = async ({ _id }, { name, fileType }, text) => {
   const newFile = new File({
     user_id: _id,
     name,
-    fileType,
-    fileBuffer: maker.pdfBuffer
+    fileType
+    // fileBuffer: maker.pdfBuffer
   });
 
-  await newFile.save().catch(error => console.error(error));
+  await newFile.save().catch(error => log.error(error));
 };
 
 const remove = async id => {

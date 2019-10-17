@@ -25,7 +25,7 @@ export default class OCR {
     await this._worker.initialize(this._language);
     const {
       data: { text }
-    } = await this._worker.recognize(this._image);
+    } = await this._worker.recognize(Buffer.from(this.image, 'base64'));
     this.text = text;
     await this._worker.terminate();
     console.info();
@@ -40,7 +40,7 @@ export default class OCR {
     this.userName = '';
     this.fileName = '';
     this.image =
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCaFXeVnCW65oc0OgL_X710xvoeV39dhYJUBCX3sS83t70-kNm5A';
+      'https://projektmarketing.pl/wp-content/uploads/2017/12/przykladowy-tekst-seo.png';
     this.createWorker();
   }
 
