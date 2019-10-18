@@ -23,18 +23,22 @@ const canCreate = async ({ _id, email }, name) => {
 };
 
 const create = async ({ _id }, name, text, fileType = 1) => {
-  const maker = new PdfMaker(name, _id);
-  maker.writeLine(text);
-  await maker.save();
+  try {
+    const maker = new PdfMaker(name, _id);
+    maker.writeLine(text);
+    await maker.save();
 
-  const newFile = new File({
-    user_id: _id,
-    name,
-    fileType
-    // fileBuffer: maker.pdfBuffer
-  });
+    const newFile = new File({
+      user_id: _id,
+      name,
+      fileType
+      // fileBuffer: maker.pdfBuffer
+    });
 
-  await newFile.save().catch(error => log.error(error));
+    return await newFile.save();
+  } catch (error) {
+    log.error(error);
+  }
 };
 
 const remove = async id => {

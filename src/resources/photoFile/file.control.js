@@ -6,6 +6,7 @@ import {
 } from '../../services/file.service';
 import OCR from '../../tools/ocr/ocr';
 import Dropbox from '../../tools/drop-box/dropbox';
+import { prepareToSend } from '../email/email.control';
 
 const saveFile = async (req, res, next) => {
   try {
@@ -18,9 +19,15 @@ const saveFile = async (req, res, next) => {
       ocr.fileName = fileName;
       ocr.userName = req.user.email;
       ocr.image = req.body.image.base64;
-      console.info(req.body.image.base64);
       await ocr.startRecognize();
-      await create(req.user, fileName, ocr.text);
+      const file = await create(req.user, fileName, ocr.text);
+      if (req.body.emailObj.value.length) {
+        Object.assign(req.body.emailObj, {
+          selectedFiles: [{ _id: file._id.toString() }]
+        });
+        //dropbox despite returing resolved promise needs to have a 1s delay to load up files
+        setTimeout(async () => await prepareToSend(req.user, req.body), 1000);
+      }
     }
   } catch (error) {
     next(error);

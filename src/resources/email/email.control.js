@@ -10,13 +10,22 @@ import log from '../../tools/console/logger';
 
 const send = async (req, res, next) => {
   try {
-    const cc = await canCreate(req.user._id);
-    const _id = req.user._id;
-    if (cc) await create(req.user, req.body.emailObj);
-    else await update(req.user, req.body.emailObj);
+    await prepareToSend(req.user, req.body);
+    res.status(201).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const prepareToSend = async (user, body) => {
+  try {
+    const cc = await canCreate(user._id);
+    const _id = user._id;
+    if (cc) await create(user, body.emailObj);
+    else await update(user, body.emailObj);
 
     const files = await getByUserID(_id);
-    const { selectedFiles } = req.body.emailObj;
+    const { selectedFiles } = body.emailObj;
     const sFiles = [];
     files.forEach(file => {
       selectedFiles.forEach(sFile => {
@@ -28,12 +37,10 @@ const send = async (req, res, next) => {
 
     connectDropbox(sFiles, _id).then(async () => {
       const attachments = fillAttachments(sFiles, _id);
-      await setAndSend(req.body.emailObj, attachments, sFiles, _id);
+      await setAndSend(body.emailObj, attachments, sFiles, _id);
     });
-
-    res.status(201).end();
   } catch (error) {
-    next(error);
+    log.error(error);
   }
 };
 
@@ -72,9 +79,13 @@ const connectDropbox = async (files, _id) => {
 
 const downloadFiles = async (files, _id, dropbox) => {
   return await files.map(async (file, index) => {
-    const rFileName = getRemoteFileName(_id, file.name);
-    await dropbox.download(rFileName);
-    return index;
+    try {
+      const rFileName = getRemoteFileName(_id, file.name);
+      await dropbox.download(rFileName);
+      return index;
+    } catch (error) {
+      log.error(error);
+    }
   });
 };
 
@@ -114,4 +125,4 @@ const setAndSend = async ({ value }, attachments, files, _id) => {
   });
 };
 
-export { send };
+export { send, prepareToSend };

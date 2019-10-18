@@ -8,8 +8,8 @@ const getByUserId = async user_id => {
   return await Email.find({ user_id });
 };
 
-const canCreate = async ({ _id }) => {
-  const emailDataExists = await getByUserId(_id);
+const canCreate = async id => {
+  const emailDataExists = await getByUserId(id);
   if (emailDataExists.length) return false;
   else return true;
 };

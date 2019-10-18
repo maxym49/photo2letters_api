@@ -39,8 +39,7 @@ export default class OCR {
     this.text = '';
     this.userName = '';
     this.fileName = '';
-    this.image =
-      'https://projektmarketing.pl/wp-content/uploads/2017/12/przykladowy-tekst-seo.png';
+    this.image = '';
     this.createWorker();
   }
 
