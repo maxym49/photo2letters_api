@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node dist/app.js",
-    "prestart": "npm run -s build",
+    "start": "nodemon -w src --exec babel-node ./src/bin/www",
     "dev": "nodemon -w src --exec babel-node ./src/bin/www",
     "build": "rimraf ./dist && babel src -d ./dist",
     "test": "jest",
@@ -47,6 +46,7 @@
     "pdfkit": "^0.10.0",
     "prettier": "^1.18.2",
     "progress": "^2.0.3",
+    "regenerator-runtime": "^0.13.3",
     "rimraf": "^3.0.0",
     "tesseract.js": "^2.0.0-beta.1"
   },

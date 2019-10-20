@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../common-models/user';
 import log from '../tools/console/logger';
-import { decryptSecret } from '../../security/tokens/secret';
+import { decryptSecret } from '../security/tokens/secret';
 
 const getAll = async () => {
   return await User.find({}).select('-hash');

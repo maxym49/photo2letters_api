@@ -5,7 +5,7 @@
     "app_desc": "The API for photo2letters mobile app",
     "node_port": 4040,
     "json_indentation": 4,
-    "database": "mongodb://localhost:27017/photo2letters_database"
+    "database": "mongodb+srv://photoAdmin:AzUDaB3Z@NQSAHr@photo2letters-9ajkn.mongodb.net/test?retryWrites=true&w=majority"
   },
   "testing": {
     "config_id": "testing",

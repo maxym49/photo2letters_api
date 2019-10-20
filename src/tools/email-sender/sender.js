@@ -2,7 +2,7 @@ import nm from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 import log from '../console/logger';
-import { decryptEmailData } from '../../../security/email-sender/email.security';
+import { decryptEmailData } from '../../security/email-sender/email.security';
 
 export default class Sender {
   constructor() {

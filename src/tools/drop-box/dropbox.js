@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import log from '../console/logger';
 import { getRemoteFileName } from '../spliter/spliter';
-import { decryptToken } from '../../../security/dropbox/dropbox.security';
+import { decryptToken } from '../../security/dropbox/dropbox.security';
 
 export default class Dropbox {
   constructor() {
