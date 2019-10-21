@@ -71,13 +71,14 @@ function () {
   }, {
     key: "initTransport",
     value: function initTransport() {
+      console.log((0, _email.decryptEmailData)('pass'));
       this.transport = _nodemailer["default"].createTransport({
         host: (0, _email.decryptEmailData)('host'),
         port: (0, _email.decryptEmailData)('port'),
         secure: true,
         auth: {
-          user: (0, _email.decryptEmailData)('user'),
-          pass: (0, _email.decryptEmailData)('pass')
+          user: 'negotiumapp.sup@gmail.com',
+          pass: 'caupona!@#$'
         }
       });
     }

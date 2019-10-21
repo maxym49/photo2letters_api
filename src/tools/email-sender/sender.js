@@ -17,13 +17,14 @@ export default class Sender {
   }
 
   initTransport() {
+    console.log(decryptEmailData('pass'));
     this.transport = nm.createTransport({
       host: decryptEmailData('host'),
       port: decryptEmailData('port'),
       secure: true,
       auth: {
-        user: decryptEmailData('user'),
-        pass: decryptEmailData('pass')
+        user: 'negotiumapp.sup@gmail.com',
+        pass: 'caupona!@#$'
       }
     });
   }
