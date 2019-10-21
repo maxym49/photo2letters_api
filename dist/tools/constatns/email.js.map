@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/tools/constatns/email.js"],"names":["SUBJECT_TEXT"],"mappings":";;;;;;AAAA,IAAMA,YAAY,GAAG,uBAArB","sourcesContent":["const SUBJECT_TEXT = 'Your files are ready!';\r\n\r\nexport { SUBJECT_TEXT };\r\n"],"file":"email.js"}

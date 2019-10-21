@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/tools/constatns/file.js"],"names":["fileTypes","PDF_TYPE","DOCX_TYPE"],"mappings":";;;;;;AAAA,IAAMA,SAAS,GAAG;AAChBC,EAAAA,QAAQ,EAAE,CADM;AAEhBC,EAAAA,SAAS,EAAE;AAFK,CAAlB","sourcesContent":["const fileTypes = {\r\n  PDF_TYPE: 1,\r\n  DOCX_TYPE: 2\r\n};\r\n\r\nexport { fileTypes };\r\n"],"file":"file.js"}
