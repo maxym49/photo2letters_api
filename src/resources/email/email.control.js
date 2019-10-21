@@ -49,7 +49,7 @@ const removeFiles = async (files, _id) => {
     const rFileName = getRemoteFileName(_id, file.name);
     fs.unlink(
       path
-        .join(__dirname, '../../../static/temporary-files', rFileName)
+        .join(__dirname, '../../../../static/temporary-files', rFileName)
         .toString(),
       error => {
         if (error) {
@@ -95,7 +95,7 @@ const fillAttachments = (files, _id) => {
     const rFileName = getRemoteFileName(_id, file.name);
     const filePath = path.join(
       __dirname,
-      '../../../static/temporary-files',
+      '../../../../static/temporary-files',
       rFileName
     );
     const fileToAdd = {
