@@ -4,6 +4,10 @@
  * Module dependencies.
  */
 
+require('babel-register');
+require('babel-core/register');
+require('babel-polyfill'); // If you use async and await
+// This us where our main application index path is
 const config = require('../../config.js');
 const app = require('../app');
 const debug = require('debug')('photo2letters-api:server');
