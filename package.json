@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "start": "node dist/app.js",
-    "prestart": "npm run -s build",
     "build": "rimraf ./dist && babel src -s -d ./dist",
     "test": "jest",
     "lint": "eslint 'src/**/*.js' --fix",
