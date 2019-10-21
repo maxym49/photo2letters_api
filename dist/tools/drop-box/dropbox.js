@@ -90,7 +90,7 @@ function () {
             console.error(error);
             reject(error);
           } else resolve();
-        }).pipe(_fs["default"].createWriteStream(_path["default"].join(__dirname, '../../../static/temporary-files', rFileName)));
+        }).pipe(_fs["default"].createWriteStream(_path["default"].join(__dirname, '../../../../static/temporary-files', rFileName)));
       });
     }
   }, {

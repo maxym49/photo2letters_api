@@ -13,6 +13,7 @@
     "*.js": [
       "prettier-eslint --write",
       "eslint --fix",
+      "npm run build",
       "git add"
     ]
   },
