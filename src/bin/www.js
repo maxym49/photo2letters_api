@@ -14,7 +14,7 @@ const readline = require('readline');
  * Get port from environment and store in Express.
  */
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || global.gConfig.node_port;
 app.set('port', port);
 
 /**

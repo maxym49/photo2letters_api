@@ -19,7 +19,7 @@ var readline = require('readline');
  */
 
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || global.gConfig.node_port;
 app.set('port', port);
 /**
  * Create HTTP server.

@@ -4,8 +4,6 @@
   "private": true,
   "scripts": {
     "start": "node dist/bin/www.js",
-    "prestart": "npm run -s build",
-    "dev": "nodemon -w src --exec babel-node ./src/bin/www",
     "build": "rimraf ./dist && babel src -s -d ./dist",
     "test": "jest",
     "lint": "eslint 'src/**/*.js' --fix",
