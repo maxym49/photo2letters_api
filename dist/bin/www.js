@@ -3,30 +3,29 @@
 /**
  * Module dependencies.
  */
+"use strict";
 
-require('babel-register');
-require('babel-core/register');
-require('babel-polyfill'); // If you use async and await
-// This us where our main application index path is
-const config = require('../../config.js');
-const app = require('../app');
-const debug = require('debug')('photo2letters-api:server');
-const http = require('http');
-const readline = require('readline');
+var config = require('../../config.js');
 
+var app = require('../app');
+
+var debug = require('debug')('photo2letters-api:server');
+
+var http = require('http');
+
+var readline = require('readline');
 /**
  * Get port from environment and store in Express.
  */
 
-const port = process.env.PORT || 5000;
-app.set('port', port);
 
+var port = process.env.PORT || 5000;
+app.set('port', port);
 /**
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
-
+var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -34,13 +33,12 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-  const port = parseInt(val, 10);
+  var port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -54,47 +52,49 @@ function normalizePort(val) {
 
   return false;
 }
-
 /**
  * Event listener for HTTP server "error" event.
  */
+
 
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port; // handle specific listen errors with friendly messages
 
-  // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
       process.exit(1);
       break;
+
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
-      const rl = readline.createInterface({
+      var rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
       });
-      rl.question('Please specify the port to use:\n', answer => {
+      rl.question('Please specify the port to use:\n', function (answer) {
         server.listen(answer);
         rl.close();
       });
       break;
+
     default:
       throw error;
   }
 }
-
 /**
  * Event listener for HTTP server "listening" event.
  */
 
+
 function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  var addr = server.address();
+  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  console.info('\x1b[32m%s\x1b[0m', `App is running on port:${addr.port}`);
+  console.info('\x1b[32m%s\x1b[0m', "App is running on port:".concat(addr.port));
 }
+//# sourceMappingURL=www.js.map

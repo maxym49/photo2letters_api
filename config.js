@@ -1,6 +1,5 @@
-import lodash from 'lodash';
-import config from './config.json';
-import log from './src/tools/console/logger';
+const lodash = require('lodash');
+const config = require('./config.json');
 const defaultConfig = config.development;
 const environment = process.env.NODE_ENV || 'development';
 const environmentConfig = config[environment];
@@ -11,7 +10,7 @@ const finalConfig = lodash.merge(defaultConfig, environmentConfig);
 // and their names should always begin with g
 global.gConfig = finalConfig;
 
-log.configInfo(
+console.log(
   `global.gConfig: ${JSON.stringify(
     global.gConfig,
     undefined,
