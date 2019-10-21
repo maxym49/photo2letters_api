@@ -38,12 +38,12 @@ function () {
     this.userID = _id;
     this.fileName = (0, _spliter.getRemoteFileName)(_id, name);
     this._doc = new _pdfkit["default"]();
-    this._filePath = _path["default"].join(__dirname, '/temporary-files', "".concat(this.fileName));
+    this._filePath = _path["default"].join(__dirname, '/../../../static/temporary-files', "".concat(this.fileName));
     this._file = _fs["default"].createWriteStream(this._filePath);
 
     this._doc.pipe(this._file);
 
-    this.fontFamily = _path["default"].join(__dirname, '/fonts', 'Lato-Regular.ttf');
+    this.fontFamily = _path["default"].join(__dirname, '/font../../../static/fonts', 'Lato-Regular.ttf');
     this.fontSize = 12;
   }
 
