@@ -45,9 +45,5 @@ errors.log
 #database scripts
 /mongo-scripts
 
-#security-config
-/security
-security
-
 #env
 /.env
