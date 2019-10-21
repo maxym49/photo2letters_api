@@ -43,7 +43,7 @@ export default class Dropbox {
         }
       ).pipe(
         fs.createWriteStream(
-          path.join(__dirname, '../../../../static/temporary-files', rFileName)
+          path.join(__dirname, '../../../static/temporary-files', rFileName)
         )
       );
     });

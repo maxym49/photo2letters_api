@@ -188,7 +188,7 @@ function () {
                       case 0:
                         rFileName = (0, _spliter.getRemoteFileName)(_id, file.name);
 
-                        _fs["default"].unlink(_path["default"].join(__dirname, '../../../../static/temporary-files', rFileName).toString(), function (error) {
+                        _fs["default"].unlink(_path["default"].join(__dirname, '../../../static/temporary-files', rFileName).toString(), function (error) {
                           if (error) {
                             _logger["default"].error(error);
                           }
@@ -328,7 +328,7 @@ var fillAttachments = function fillAttachments(files, _id) {
   files.forEach(function (file) {
     var rFileName = (0, _spliter.getRemoteFileName)(_id, file.name);
 
-    var filePath = _path["default"].join(__dirname, '../../../../static/temporary-files', rFileName);
+    var filePath = _path["default"].join(__dirname, '../../../static/temporary-files', rFileName);
 
     var fileToAdd = {
       filename: "".concat(file.name, ".pdf"),

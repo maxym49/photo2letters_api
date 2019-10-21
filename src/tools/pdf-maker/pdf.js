@@ -12,14 +12,14 @@ export default class PdfMaker {
     this._doc = new Kit();
     this._filePath = path.join(
       __dirname,
-      '../../../../static/temporary-files',
+      '../../../static/temporary-files',
       `${this.fileName}`
     );
     this._file = fs.createWriteStream(this._filePath);
     this._doc.pipe(this._file);
     this.fontFamily = path.join(
       __dirname,
-      '../../../../static/fonts',
+      '../../../static/fonts',
       'Lato-Regular.ttf'
     );
     this.fontSize = 12;

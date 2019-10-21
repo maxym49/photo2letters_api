@@ -41,7 +41,7 @@ export default class Sender {
   readHtmlFile() {
     return new Promise((resolve, reject) => {
       fs.readFile(
-        path.join(__dirname, '/templates', 'eng_template.html'),
+        path.join(__dirname, '../../../static/templates', 'eng_template.html'),
         (err, data) => {
           if (err) {
             log.error(err);

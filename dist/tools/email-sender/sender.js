@@ -98,7 +98,7 @@ function () {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        _fs["default"].readFile(_path["default"].join(__dirname, '/templates', 'eng_template.html'), function (err, data) {
+        _fs["default"].readFile(_path["default"].join(__dirname, '../../../static/templates', 'eng_template.html'), function (err, data) {
           if (err) {
             _logger["default"].error(err);
 
