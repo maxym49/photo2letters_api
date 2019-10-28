@@ -47,3 +47,7 @@ errors.log
 
 #env
 /.env
+
+/static/temporary-files
+
+/tokens
