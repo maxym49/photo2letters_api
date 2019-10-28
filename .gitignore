@@ -45,9 +45,3 @@ errors.log
 #database scripts
 /mongo-scripts
 
-#env
-/.env
-
-/static/temporary-files
-
-/tokens
