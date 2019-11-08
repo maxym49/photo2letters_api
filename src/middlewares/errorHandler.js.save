@@ -1,0 +1,26 @@
+import log from '../tools/console/logger';
+
+export function errorHandler(err, req, res) {
+  
+  if (typeof err === 'string') {
+    // custom application error
+    console.error(err.message);
+    console.error(err.name);
+  }
+
+  if (err.name === 'ValidationError') {
+    // mongoose validation erro console.error(err.message);
+    console.error(err.message);
+    console.error(err.name);    
+  }
+
+  if (err.name === 'UnauthorizedError') {
+    // jwt authentication error
+
+  }
+
+  // default to 500 server error
+  return res.status(500).json({ message: err.message });
+}
+ console.error(err.message);
+    console.error(err.name);

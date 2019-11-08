@@ -3,7 +3,7 @@
 # compiled output
 /tmp
 /out-tsc
-
+dist
 # dependencies
 /node_modules
 
@@ -44,4 +44,7 @@ errors.log
 
 #database scripts
 /mongo-scripts
+
+static/certificate.crt
+static/pk.key
 
