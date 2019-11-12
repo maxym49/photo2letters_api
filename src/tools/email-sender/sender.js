@@ -18,9 +18,7 @@ export default class Sender {
 
   initTransport() {
     this.transport = nm.createTransport({
-      host: decryptEmailData('host'),
-      port: decryptEmailData('port'),
-      secure: true,
+      service: decryptEmailData('host'),
       auth: {
         user: decryptEmailData('user'),
         pass: decryptEmailData('pass')

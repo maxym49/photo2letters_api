@@ -48,3 +48,6 @@ errors.log
 static/certificate.crt
 static/pk.key
 
+
+tokens
+/tokens
